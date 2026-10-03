@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 
-const SITE_URL = "https://studio-admin.arhamkhnz.com";
+const SITE_URL = "http://localhost:3000";
 
 const PUBLIC_ROUTES = [
   "/",
