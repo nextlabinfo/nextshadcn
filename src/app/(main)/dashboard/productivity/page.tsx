@@ -1,0 +1,65 @@
+import type { Metadata } from "next";
+import { headers } from "next/headers";
+import { redirect } from "next/navigation";
+
+import { auth } from "@/lib/auth";
+import { getTasks } from "@/server/feature-actions";
+import { getProdNotes, getProdProjects, getProductivitySummary } from "@/server/productivity-actions";
+
+import { CalendarPanel } from "./_components/calendar-panel";
+import { FocusCard } from "./_components/focus-card";
+import { ProjectsSection } from "./_components/projects-section";
+import { QuickActions } from "./_components/quick-actions";
+import { QuoteCard } from "./_components/quote-card";
+import { RecentNotesCard } from "./_components/recent-notes-card";
+import { SummaryCards } from "./_components/summary-cards";
+import { TasksSection } from "./_components/tasks-section";
+import { WeeklySummaryCard } from "./_components/weekly-summary-card";
+
+export const metadata: Metadata = {
+  title: "Open Source Productivity Dashboard with shadcn/ui",
+  description:
+    "Explore an open source productivity dashboard with tasks, projects, focus time, notes, schedules, and weekly progress.",
+  alternates: {
+    canonical: "/dashboard/productivity",
+  },
+};
+
+export default async function Page() {
+  const session = await auth.api.getSession({ headers: await headers() });
+  if (!session?.user) redirect("/auth/v2/login");
+
+  const [summary, tasks, projects, notes] = await Promise.all([
+    getProductivitySummary(),
+    getTasks(),
+    getProdProjects(),
+    getProdNotes(),
+  ]);
+
+  return (
+    <div className="grid gap-6 lg:grid-cols-12">
+      <section className="lg:col-span-9">
+        <div className="flex flex-col gap-6">
+          <div className="flex flex-col gap-2">
+            <h1 className="text-3xl text-foreground leading-none tracking-tight">Good morning, Arham.</h1>
+            <p className="text-lg text-muted-foreground leading-none">
+              Let&apos;s make today productive and meaningful.
+            </p>
+          </div>
+          <SummaryCards summary={summary} />
+          <TasksSection tasks={tasks} />
+          <ProjectsSection projects={projects} />
+          <QuickActions />
+          <QuoteCard />
+        </div>
+      </section>
+
+      <section className="flex flex-col gap-6 lg:col-span-3">
+        <CalendarPanel />
+        <FocusCard />
+        <RecentNotesCard notes={notes} />
+        <WeeklySummaryCard summary={summary} />
+      </section>
+    </div>
+  );
+}
