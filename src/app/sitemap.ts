@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 
-const SITE_URL = "http://localhost:3000";
+const SITE_URL = "https://nextshadcn.vercel.app";
 
 const PUBLIC_ROUTES = [
   "/",

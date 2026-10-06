@@ -57,9 +57,8 @@ export function LoginForm() {
     }
 
     toast.success("Logged in successfully");
-    const callbackUrl = searchParams.get("callbackUrl") ?? "/dashboard";
-    router.push(callbackUrl);
-    router.refresh();
+    const callbackUrl = searchParams.get("callbackUrl") ?? "/dashboard/default";
+    window.location.href = callbackUrl;
   }
 
   return (
