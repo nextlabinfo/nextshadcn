@@ -57,7 +57,7 @@ export function LoginForm() {
     }
 
     toast.success("Logged in successfully");
-    const callbackUrl = searchParams.get("callbackUrl") ?? "/dashboard/default";
+    const callbackUrl = searchParams.get("callbackUrl") ?? "/dashboard/finance-analyst";
     window.location.href = callbackUrl;
   }
 

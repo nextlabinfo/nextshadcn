@@ -22,7 +22,7 @@ export function proxy(req: NextRequest) {
   }
 
   if (isAuthRoute && token) {
-    return NextResponse.redirect(new URL("/dashboard", req.url));
+    return NextResponse.redirect(new URL("/dashboard/finance-analyst", req.url));
   }
 
   return NextResponse.next();
